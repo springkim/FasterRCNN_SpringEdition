@@ -1,2 +1,1 @@
-FasterRCNN_SE_Detection_Example\3rdparty\bin\x64\Debug\opencv_world330d.dll filter=lfs diff=lfs merge=lfs -text
-FasterRCNN_SE_Detection_Example\3rdparty\bin\x64\Release\opencv_world330.dll filter=lfs diff=lfs merge=lfs -text
+CNTK/* linguist-vendored
