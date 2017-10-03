@@ -2,7 +2,7 @@
 
 ###### FasterRCNN C++ library. (Train,Detect both)
 * All dependencies are included.
-* Can Train FasterRCNN as double click.
+* Can train FasterRCNN as double click.
 * Need only 1 header file, To detect by FasterRCNN.
 
 <img src="https://i.imgur.com/ElCyyzT.png" title="Windows8" width="48"><img src="https://i.imgur.com/O5bye0l.png" width="48">
@@ -30,14 +30,14 @@ This format follows the [Microsoft/CNTK](https://github.com/Microsoft/CNTK) form
 1	<image-path>	0
 2	<image-path>	0
 ```
-First column is number of image. Second column is image path. Last column must be zero.
-You can see [CNTK/FasterRCNN/train_img_file.txt](https://github.com/springkim/FasterRCNN_SpringEdition/blob/master/CNTK/FasterRCNN/train_img_file.txt) for understand.
+First column is index of image. Second column is image path. Last column must be zero.
+You can see [CNTK/FasterRCNN/train_img_file.txt](https://github.com/springkim/FasterRCNN_SpringEdition/blob/master/CNTK/FasterRCNN/train_img_file.txt) to understand.
 `train_roi_file.txt` follows the format below.
 ```
 0 |roiAndLabel <x1 y1 x2 y2 class>
 1 |roiAndLabel <x1 y1 x2 y2 class> <x1 y1 x2 y2 class>
 ```
-First column is number of image ~~(stupid format)~~ , Second column must be `|roiAndLabel` ,Third column is coordinate of object. You can write multiple coordinate of object in same line.
+First column is index of image ~~(stupid format)~~ , Second column must be `|roiAndLabel` ,Third column is coordinate of object. You can write multiple coordinate of object in same line.
 
 Finally, It looks like below.
 ```
