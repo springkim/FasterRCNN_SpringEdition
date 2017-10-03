@@ -37,7 +37,7 @@ You can see [CNTK/FasterRCNN/train_img_file.txt](https://github.com/springkim/Fa
 0 |roiAndLabel <x1 y1 x2 y2 class>
 1 |roiAndLabel <x1 y1 x2 y2 class> <x1 y1 x2 y2 class>
 ```
-First column is number of image~~(stupid format)~~, Second column must be `|roiAndLabel` ,Third column is coordinate of object. You can write multiple coordinate of object in same line.
+First column is number of image ~~(stupid format)~~ , Second column must be `|roiAndLabel` ,Third column is coordinate of object. You can write multiple coordinate of object in same line.
 
 Finally, It looks like below.
 ```
@@ -62,15 +62,14 @@ Run both **download_detect_exe.bat** and **download_pretrained_model.bat** in th
 
 And open **FasterRCNN_SE_Detection_Example.sln** as [Visual Studio 2015](https://www.visualstudio.com/ko/downloads/?rr=https%3A%2F%2Fwww.google.co.kr%2F).~~(Maybe it works on VS2013 and VS2017 too)~~
 
-We needs only 1 header file**(FasterRCNN_SE.h)** for detect. Of course your exe file needs **FasterRCNN_Detect_SE.exe** and requirement dlls(22 files).
+We needs only 1 header file (**FasterRCNN_SE.h**) for detect. Of course your exe file needs **FasterRCNN_Detect_SE.exe** and requirement dlls(22 files).
 
 Model loading time is about 20~30s.
 
 ## Technical issue.
 The [CNTK](https://github.com/Microsoft/CNTK) is python wrapper. They support C++ interface. But it works only in CPU to detection.
 
-[CPU version detection](https://github.com/springkim/FasterRCNN_SpringEdition/blob/master/dev/CNTK-
-eval-CPU-only.cpp)
+[CPU version detection](https://github.com/springkim/FasterRCNN_SpringEdition/blob/master/dev/CNTK-eval-CPU-only.cpp)
 
 I have to run this code on C++ without Python dependencies.
 
