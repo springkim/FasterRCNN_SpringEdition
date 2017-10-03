@@ -1,9 +1,9 @@
 /*
 *  FasterRCNN_SE.hpp
-*  FasterRCNN_SE
+*  FasterRCNN_SpringEdition
 *
 *  Created by kimbom on 2017. 10. 2...
-*  Copyright 2017 Sogang Unuv. All rights reserved.
+*  Copyright 2017 Sogang Univ. All rights reserved.
 *
 */
 #if !defined(FASTERRCNN_SE_7E1_A_2_FASTERRCNN_SE_HPP_INCLUDED)
@@ -83,6 +83,7 @@ public:
 		}
 	}
 	std::vector<Box> Detect(std::string img_path, float threshold) {
+		::ReleaseMutex(m_mutex);
 		bool pass = false;
 		while (pass == false) {
 			WaitForSingleObject(m_mutex, INFINITE);
@@ -124,7 +125,7 @@ public:
 		for (int i = 0; i < result[0]; i++) {
 			Box box;
 			box.m_class = result[i * 6 + 1];
-			box.m_score = result[i * 6 + 2] / 10000.0;
+			box.m_score = result[i * 6 + 2] / 10000.0F;
 			box.x= result[i * 6 + 3];
 			box.y = result[i * 6 + 4];
 			box.width = result[i * 6 + 5] - box.x;
@@ -134,7 +135,7 @@ public:
 			}
 		}
 		auto IOU = [](Box& a, Box& b)->float {
-			float i = (a & b).area();
+			float i = static_cast<float>((a & b).area());
 			float u = a.area() + b.area() - i;
 			return i / u;
 		};
@@ -154,7 +155,7 @@ public:
 				boxes2.push_back(boxes[i]);
 			}
 		}
-
+		WaitForSingleObject(m_mutex, INFINITE);
 		return boxes2;
 	}
 private:

@@ -9,7 +9,7 @@ int main() {
 	FasterRCNN detector;
 
 	detector.Create(model_path);
-	
+
 	std::string img_file = "0067.jpg";
 
 	std::vector<FasterRCNN::Box> boxes = detector.Detect(img_file, 0.9F);
@@ -23,6 +23,7 @@ int main() {
 	cv::imshow("result", img);
 	cv::waitKey();
 	cv::destroyAllWindows();
+
 	detector.Release();
 	return 0;
 }

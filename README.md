@@ -79,8 +79,13 @@ Finally, It does not support GPU SLI.
 
 I tested it on (Windows10,GTX1080) and (windows10,TITAN X).
 
-
-
+## Hardware requirement
+* Detect
+	* Main Memory : 4.5GB over
+	* GPU Memory : 3GB over
+* Train
+	* Main Memory : 4.5GB over
+	* GPU Memory : 4.5GB over
 
 
 
