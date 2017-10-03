@@ -43,8 +43,8 @@ public:
 		m_shmem = ::CreateFileMappingA(INVALID_HANDLE_VALUE, nullptr,PAGE_READWRITE, 0, m_size, m_key_shmem.c_str());
 		m_buffer = (char*)::MapViewOfFile(m_shmem, FILE_MAP_ALL_ACCESS, 0, 0, m_size);
 		m_buffer[0] = 0;
-		std::string exec = "python \"C:/Users/spring/Documents/SourceTree/FasterRCNN_SpringEdition/CNTK/FasterRCNN/src/FasterRCNN_Detect_SE.py\"";
-		//std::string exec = "FasterRCNN_Detect_SE.exe";
+		//std::string exec = "python \"C:/Users/spring/Documents/SourceTree/FasterRCNN_SpringEdition/CNTK/FasterRCNN/src/FasterRCNN_Detect_SE.py\"";
+		std::string exec = "FasterRCNN_Detect_SE.exe";
 		std::ostringstream oss;
 		oss << exec << " " << m_key_shmem << " " << m_key_mutex << " " << m_size << " " << "\"" << model_path << "\"";
 		UINT ret=WinExec(oss.str().c_str(), SW_SHOW);
