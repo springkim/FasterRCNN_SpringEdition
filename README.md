@@ -3,7 +3,7 @@
 ###### FasterRCNN C++ library. (Train,Detect both)
 * All dependencies are included.
 * Can train FasterRCNN as double click.
-* Need only 1 header file, To detect by FasterRCNN.
+* You need only 1 header file, To detect by FasterRCNN.
 
 <img src="https://i.imgur.com/ElCyyzT.png" title="Windows8" width="48"><img src="https://i.imgur.com/O5bye0l.png" width="48">
 
@@ -65,8 +65,46 @@ And open **FasterRCNN_SE_Detection_Example.sln** as [Visual Studio 2015](https:/
 We needs only 1 header file (**FasterRCNN_SE.h**) for detect. Of course your exe file needs **FasterRCNN_Detect_SE.exe** and requirement dlls(22 files).
 
 Model loading time is about 20~30s.
+Detectio time is about 0.15s.
+###### Result
+```
+Selected GPU[0] GeForce GTX 1080 as the process wide default device.
+Loading time : 27.4121
+Recall : 0.751323
+Precision : 0.851852
+Average detection time : 0.14566
+FPS : 6.8653
+```
+![](https://i.imgur.com/EwOoEov.jpg)
 
-## Technical issue.
+## Reference
+
+The class `FasterRCNN` that in `FasterRCNN_SE.h` has **3** method.
+```cpp
+void FasterRCNN::Create(std::string model_path,std::string classfile,DWORD size=6000)
+```
+This method load trained model and class naming file.
+* Parameter
+	* **model_path** : trained model path (e.g. "faster_rcnn_eval_VGG16_e2e.model")
+	* **classfile** : class naming file path(same as used at training)
+	* **size** : IPC buffer size.(@see Technical issue)
+
+```cpp
+std::vector<BoxSE> FasterRCNN::Detect(std::string img_path, float threshold)
+```
+This method is detecting objects of file .
+* Parameter
+	* **img_path** : image path
+	* **threshold** : It removes predictive boxes if there score is less than threshold.
+
+```cpp
+void FasterRCNN::Release()
+```
+Release main-memory and gpu-memory.
+
+
+
+## Technical issue
 The [CNTK](https://github.com/Microsoft/CNTK) is python wrapper. They support C++ interface. But it works only in CPU to detection.
 
 [CPU version detection](https://github.com/springkim/FasterRCNN_SpringEdition/blob/master/dev/CNTK-eval-CPU-only.cpp)
@@ -79,6 +117,14 @@ Finally, It does not support GPU SLI.
 
 I tested it on (Windows10,GTX1080) and (windows10,TITAN X).
 
+## Software requirement
+* Visual Studio 2015
+* CUDA 8.0
+* **if you want rebuild**
+	* python 3.5(Anaconda)
+	* pyinstaller
+	* CNTK
+
 ## Hardware requirement
 * Detect
 	* Main Memory : 4.5GB over
@@ -86,6 +132,7 @@ I tested it on (Windows10,GTX1080) and (windows10,TITAN X).
 * Train
 	* Main Memory : 4.5GB over
 	* GPU Memory : 4.5GB over
+
 
 
 
