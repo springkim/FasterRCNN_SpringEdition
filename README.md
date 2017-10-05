@@ -70,13 +70,13 @@ Detection time is about 0.15s.
 ###### Result
 ```
 Selected GPU[0] GeForce GTX 1080 as the process wide default device.
-Loading time : 27.4121
-Recall : 0.751323
+Loading time : 27.2435
+Recall : 0.759259
 Precision : 0.851852
-Average detection time : 0.14566
-FPS : 6.8653
+Average detection time : 0.14047
+FPS : 7.11894
 ```
-![](https://i.imgur.com/EwOoEov.jpg)
+![](https://i.imgur.com/GJvCpZh.jpg)
 
 ## Reference
 
