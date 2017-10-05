@@ -10,7 +10,7 @@
 ## Setup for train
 #### 1. Download model and files.
 There is a **download_model.bat** in [CNTK/FasterRCNN/](https://github.com/springkim/FasterRCNN_SpringEdition/tree/master/CNTK/FasterRCNN).
-This file can download **VGG16_ImageNet_Caffe.model** . because our **FasterRCNN** use **VGG16** instead of **Alexnet**.
+This file can download **VGG16_ImageNet_Caffe.model** .
 
 And move to [CNTK/FasterRCNN/bin](https://github.com/springkim/FasterRCNN_SpringEdition/tree/master/CNTK/FasterRCNN/bin) and run **download_runfile.bat**.
 This file download **FasterRCNN_Train_SE.exe** and dependency dlls.
@@ -48,6 +48,7 @@ Finally, It looks like below.
 │  └ <images that wrote in train_img_file.txt>
 ├ train_img_file.txt
 ├ train_roi_file.txt
+├ VGG16_ImageNet_Caffe.model
 └ train.bat
 ```
 Now you can run **train.bat** for trainning.
@@ -65,7 +66,7 @@ And open **FasterRCNN_SE_Detection_Example.sln** as [Visual Studio 2015](https:/
 We needs only 1 header file (**FasterRCNN_SE.h**) for detect. Of course your exe file needs **FasterRCNN_Detect_SE.exe** and requirement dlls(22 files).
 
 Model loading time is about 20~30s.
-Detectio time is about 0.15s.
+Detection time is about 0.15s.
 ###### Result
 ```
 Selected GPU[0] GeForce GTX 1080 as the process wide default device.
