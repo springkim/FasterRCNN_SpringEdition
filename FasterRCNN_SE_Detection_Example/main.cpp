@@ -6,18 +6,19 @@
 
 int main() {
 	std::string model_path = "faster_rcnn_eval_VGG16_e2e.model";
+	std::string class_map_path = "class_map.txt";
 	FasterRCNN detector;
 
-	detector.Create(model_path);
+	detector.Create(model_path, class_map_path);
 
 	std::string img_file = "0067.jpg";
 
-	std::vector<FasterRCNN::Box> boxes = detector.Detect(img_file, 0.9F);
+	std::vector<BoxSE> boxes = detector.Detect(img_file, 0.9F);
 	cv::Mat img = cv::imread(img_file);
 	for (auto&box : boxes) {
 		std::cout << box.m_class << std::endl;
 		std::cout << box.m_score << std::endl;
-		std::cout << "[" << box.x << "," << box.y << "," << box.width << "," << box.height << "]" << std::endl;
+		std::cout << box.m_class_name << "[" << box.x << "," << box.y << "," << box.width << "," << box.height << "]" << std::endl;
 		cv::rectangle(img, box, cv::Scalar(0, 0, 255), 2);
 	}
 	cv::imshow("result", img);

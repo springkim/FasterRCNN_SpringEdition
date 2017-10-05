@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  FasterRCNN_SE.hpp
 *  FasterRCNN_SpringEdition
 *
@@ -14,13 +14,38 @@
 #include<sstream>
 #include<Windows.h>
 #include<opencv2/opencv.hpp>
-class FasterRCNN {
+#ifndef  SPRING_EDITION_BOX
+#define SPRING_EDITION_BOX
+/**
+*	@brief 이 클래스는 cv::Rect를 확장한 것으로 클래스값과 스코어값이 추가되었습니다.
+*	@author kimbomm
+*	@date 2017-10-05
+*
+*	@see	https://github.com/springkim/FasterRCNN_SpringEdition
+*	@see	https://github.com/springkim/YOLOv2_SpringEdition
+*/
+class BoxSE : public cv::Rect {
 public:
-	class Box : public cv::Rect{
-	public:
-		int m_class;
-		float m_score;
-	};
+	int m_class = -1;
+	float m_score = 0.0F;
+	std::string m_class_name;
+	BoxSE() {
+		m_class_name = "Unknown";
+	}
+	BoxSE(int c, float s, int _x, int _y, int _w, int _h, std::string name = "")
+		:m_class(c), m_score(s) {
+		this->x = _x;
+		this->y = _y;
+		this->width = _w;
+		this->height = _h;
+		char* lb[5] = { "th","st","nd","rd","th" };
+		if (name.length() == 0) {
+			m_class_name = std::to_string(m_class) + lb[m_class < 4 ? m_class : 4] + " class";
+		}
+	}
+};
+#endif
+class FasterRCNN {
 private:
 	std::string m_key_mutex = "";
 	HANDLE	m_mutex = INVALID_HANDLE_VALUE;
@@ -33,8 +58,9 @@ private:
 	//2(50) = detect
 	//3(51) = receive
 	//9(57) = terminate signal
+	std::vector<std::string> m_class_map;
 public:
-	void Create(std::string model_path,DWORD size=6000) {
+	void Create(std::string model_path,std::string classfile,DWORD size=6000) {
 		m_key_shmem = this->GetKey() + "_shmem";
 		m_key_mutex = this->GetKey() + "_mutex";
 		m_size = size;
@@ -60,6 +86,24 @@ public:
 			}
 			::ReleaseMutex(m_mutex);
 		}
+		std::fstream fin;
+		fin.open(classfile, std::ios::in);
+		if (fin.is_open() == false) {
+			::MessageBoxA(nullptr, "Can't read class map file", "Error", MB_OK);
+			exit(1);
+		}
+		std::string line;
+		while (!fin.eof()) {
+			std::getline(fin, line);
+			if (line.length() == 0) {
+				break;
+			}
+			std::istringstream iss(line);
+			std::string _class;
+			iss >> _class;
+			m_class_map.push_back(_class);
+		}
+		fin.close();
 	}
 	void Release() {
 		bool pass = false;
@@ -82,7 +126,7 @@ public:
 			this->Release();
 		}
 	}
-	std::vector<Box> Detect(std::string img_path, float threshold) {
+	std::vector<BoxSE> Detect(std::string img_path, float threshold) {
 		::ReleaseMutex(m_mutex);
 		bool pass = false;
 		while (pass == false) {
@@ -121,10 +165,11 @@ public:
 			result.push_back(atoi(str.c_str()));
 			offset += str.length() + 1;
 		}
-		std::vector<Box> boxes;
+		std::vector<BoxSE> boxes;
 		for (int i = 0; i < result[0]; i++) {
-			Box box;
+			BoxSE box;
 			box.m_class = result[i * 6 + 1];
+			box.m_class_name = m_class_map[box.m_class];
 			box.m_score = result[i * 6 + 2] / 10000.0F;
 			box.x= result[i * 6 + 3];
 			box.y = result[i * 6 + 4];
@@ -134,15 +179,15 @@ public:
 				boxes.push_back(box);
 			}
 		}
-		auto IOU = [](Box& a, Box& b)->float {
+		auto IOU = [](BoxSE& a, BoxSE& b)->float {
 			float i = static_cast<float>((a & b).area());
 			float u = a.area() + b.area() - i;
 			return i / u;
 		};
 		//Sort by Greater
-		std::sort(boxes.begin(), boxes.end(), [](Box& a, Box& b)->bool {return a.m_score > b.m_score; });
+		std::sort(boxes.begin(), boxes.end(), [](BoxSE& a, BoxSE& b)->bool {return a.m_score > b.m_score; });
 		std::vector<bool> select(boxes.size(), true);
-		std::vector<Box> boxes2;
+		std::vector<BoxSE> boxes2;
 		for (int i = 0; i < boxes.size(); i++) {
 			if (select[i] == true) {
 				for (int j = i + 1; j < boxes.size(); j++) {
