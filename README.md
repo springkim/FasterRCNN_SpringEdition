@@ -76,7 +76,7 @@ Precision : 0.851852
 Average detection time : 0.14047
 FPS : 7.11894
 ```
-![](https://i.imgur.com/GJvCpZh.jpg)
+![](https://i.imgur.com/bQ8l6ae.jpg)
 
 ## Reference
 

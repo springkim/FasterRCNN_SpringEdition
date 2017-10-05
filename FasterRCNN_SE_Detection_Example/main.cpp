@@ -55,16 +55,17 @@ int main() {
 		cv::Mat img = cv::imread(file);
 
 		for (auto&box : boxes) {
-			ispring::CVEval::DrawBoxSE(img, box);
+			ispring::CVEval::DrawBoxSE(img, box,cv::Scalar(0,0,255));
 		}
 		for (auto&box : ground_truth) {
-			ispring::CVEval::DrawBoxSE(img, box);
+			ispring::CVEval::DrawBoxSE(img, box,cv::Scalar(0,255,0));
 		}
 		results.push_back(img);
 	}
 	detector.Release();												//Release
 	cv::Mat img = ispring::CV::GlueImage(results);
 	ispring::CV::DisplayImage2(img, true);
+	cv::imwrite("result.jpg", img);
 	double T = ispring::Timer::Watch("detect").avg;
 	std::cout << "Recall : " << RP.first/files.size() << std::endl;
 	std::cout << "Precision : " << RP.second/files.size() << std::endl;
