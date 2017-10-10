@@ -135,6 +135,12 @@ I tested it on (Windows10,GTX1080) and (windows10,TITAN X).
 	* GPU Memory : 4.5GB over
 
 
-
+## Error
+```
+ValueError: attempt to get argmax of an empty sequence
+```
+This error means can't load roi data.
+case 1 : roi data is empty.
+case 2 : x2 is greater than x1 or y2 is greater than y1 in roi file.
 
 
