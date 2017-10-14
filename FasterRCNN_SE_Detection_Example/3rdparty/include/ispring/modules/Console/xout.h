@@ -44,20 +44,20 @@ auto get_endl(const std::basic_ostream<e, t>&)-> decltype(&std::endl<e, t>) {
 #if _MSC_VER==1910		///VS 2017
 //https://i.imgur.com/TOFHpX4.png
 #if _WIN64
-const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat amd64 ";
+SELECT_ANY const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat amd64 ";
 #else
-const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat x86 ";
+SELECT_ANY const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat x86 ";
 #endif
 #elif _MSC_VER==1900	///VS 2015
-const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat";
+SELECT_ANY const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat";
 #elif _MSC_VER==1800		///VS 2013
-const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/vcvarsall.bat";
+SELECT_ANY const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/vcvarsall.bat";
 #elif _MSC_VER==1700		///VS2012
-const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio 11.0/VC/vcvarsall.bat";
+SELECT_ANY const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio 11.0/VC/vcvarsall.bat";
 #elif _MSC_VER==1600		///VS2010
-const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/vcvarsall.bat";
+SELECT_ANY const char* compiler = "C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/vcvarsall.bat";
 #elif defined(__GNUC__) ///MinGW
-const char* compiler = "g++";
+SELECT_ANY const char* compiler = "g++";
 #endif
 #endif //DOXYGEN
 namespace ispring { 

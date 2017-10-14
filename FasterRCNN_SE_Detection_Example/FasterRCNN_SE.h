@@ -60,7 +60,7 @@ private:
 	//9(57) = terminate signal
 	std::vector<std::string> m_class_map;
 public:
-	void Create(std::string model_path,std::string classfile,DWORD size=6000) {
+	void Create(std::string model_path,std::string classfile,DWORD size=10000,float filter_threshold=0.4F) {
 		m_key_shmem = this->GetKey() + "_shmem";
 		m_key_mutex = this->GetKey() + "_mutex";
 		m_size = size;
@@ -72,7 +72,7 @@ public:
 		//std::string exec = "python \"C:/Users/spring/Documents/SourceTree/FasterRCNN_SpringEdition/CNTK/FasterRCNN/src/FasterRCNN_Detect_SE.py\"";
 		std::string exec = "FasterRCNN_Detect_SE.exe";
 		std::ostringstream oss;
-		oss << exec << " " << m_key_shmem << " " << m_key_mutex << " " << m_size << " " << "\"" << model_path << "\"";
+		oss << exec << " " << m_key_shmem << " " << m_key_mutex << " " << m_size << " " << "\"" << model_path << "\"" << "\t" << filter_threshold;
 		UINT ret=WinExec(oss.str().c_str(), SW_SHOW);
 		if (ret < 31) {
 			::MessageBoxA(nullptr, "FasterRCNN Detector execute failed\nIt needs \"FasterRCNN_Detect_SE.exe\".", "Error", MB_OK);
@@ -132,13 +132,13 @@ public:
 		while (pass == false) {
 			WaitForSingleObject(m_mutex, INFINITE);
 			if (m_buffer[0] == '1') {
-				
 				memset(m_buffer + 1, 0,m_size - 1);
 				char* p = m_buffer + 1;
 				const char* q = img_path.data();
 				while (*q != '\0') {
 					*p++ = *q++;
 				}
+				*p = '\0';
 				//strcpy(m_buffer + 1, img_path.c_str());	//strcpy is not working on SDL.
 				//strcpy_s(m_buffer + 1, m_size-1,img_path.c_str());		//strcpy_s is not working on debug mode.
 				m_buffer[0] = '2';	//running

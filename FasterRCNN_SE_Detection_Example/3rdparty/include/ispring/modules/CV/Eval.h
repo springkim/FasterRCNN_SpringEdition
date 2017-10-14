@@ -79,7 +79,13 @@ namespace ispring {
 		*	@return pair.first는 Recall 이고 pair.second는 precision 입니다.
 		*/
 		static std::pair<float,float> GetRecallPrecisionSingleClass(std::vector<BoxSE> ground_truth,std::vector<BoxSE> predict,float threshold1=0.5F) {
-			std::pair<float, float> ret;
+			std::pair<float, float> ret = { 0.0F,0.0F };
+			if (predict.size() == 0 && ground_truth.size() == 0) {
+				return std::make_pair(1.0F, 1.0F);
+			}
+			if (predict.size() == 0 || ground_truth.size() == 0) {
+				return std::make_pair(0.0F, 0.0F);
+			}
 			std::vector<int> correct;
 			correct.assign(predict.size(), -1);
 			for (size_t i = 0; i < predict.size(); ++i) {
@@ -186,6 +192,28 @@ namespace ispring {
 			}
 			cv::rectangle(img, or +cv::Point(0, -text.height - padding * 2), or +cv::Point(text.width, 0), c, CV_FILLED);
 			cv::putText(img, label, or +cv::Point(0, -padding), font_face, scale, text_color, thickness);
+		}
+		/**
+		*	@brief BoxSE를 이미지에 색 박스로 그립니다.
+		*	@param img 박스가 그려질 이미지
+		*	@param box 박스
+		*	@param c 색상. 지정하지 않으면 GetRGB 함수를 사용합니다.
+		*	@remark
+		*		<img src="https://i.imgur.com/gCWZzVG.jpg" width="640">
+		*/
+		static void DrawColorBoxSE(cv::Mat img, BoxSE rect, cv::Scalar c) {
+			auto MakeColorBox = [](int w, int h, cv::Scalar c)->cv::Mat {
+				std::vector<cv::Mat> planes;
+				planes.push_back(cv::Mat::zeros(h, w, CV_8UC1) + c[2]);
+				planes.push_back(cv::Mat::zeros(h, w, CV_8UC1) + c[1]);
+				planes.push_back(cv::Mat::zeros(h, w, CV_8UC1) + c[0]);
+				cv::Mat box;
+				cv::merge(planes, box);
+				return box;
+			};
+			cv::Mat crop = img(rect);
+			cv::Mat box = MakeColorBox(rect.width, rect.height,c);
+			crop = 0.3*crop + 0.7*box;
 		}
 	};
 }

@@ -9,7 +9,7 @@ import cv2 # pip install opencv-python
 import numpy as np
 import os
 from utils.proposal_helpers import ProposalProvider, compute_targets, compute_image_stats
-
+import re
 DEBUG = False
 if DEBUG:
     import matplotlib.pyplot as mp
@@ -147,7 +147,13 @@ class ObjectDetectionReader:
             imgnp = np.array(bytearray(imgdata), dtype=np.uint8)
             img = cv2.imdecode(imgnp, 1)
         else:
-            img = cv2.imread(image_path)
+            if re.compile('[^ ㄱ-ㅣ가-힣]+').sub('', image_path):
+                stream = open(image_path, "rb")
+                bytes = bytearray(stream.read())
+                numpyarray = np.asarray(bytes, dtype=np.uint8)
+                img = cv2.imdecode(numpyarray, cv2.IMREAD_UNCHANGED)
+            else:
+                img = cv2.imread(image_path)
 
         return img
 

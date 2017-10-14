@@ -17,6 +17,7 @@ from cntk import input_variable, Axis
 from utils.nms_wrapper import apply_nms_to_single_image_results
 from utils.rpn.bbox_transform import regress_rois
 import cv2 # pip install opencv-python
+import re
 
 available_font = "arial.ttf"
 try:
@@ -31,8 +32,14 @@ def load_resize_and_pad(image_path, width, height, pad_value=114):
     if "@" in image_path:
         print("WARNING: zipped image archives are not supported for visualizing results.")
         exit(0)
-
-    img = cv2.imread(image_path)
+    if re.compile('[^ ㄱ-ㅣ가-힣]+').sub('', image_path):
+        stream = open(image_path, "rb")
+        bytes = bytearray(stream.read())
+        numpyarray = np.asarray(bytes, dtype=np.uint8)
+        img = cv2.imdecode(numpyarray, cv2.IMREAD_UNCHANGED)
+    else:
+        img = cv2.imread(image_path)
+    #img = cv2.imread(image_path)
     return resize_and_pad(img, width, height, pad_value)
 def load_dummy_image_resize_and_pad(width, height, pad_value=114):
     img = np.zeros((64, 64, 3), np.uint8)

@@ -13,14 +13,14 @@ cfg = __C
 
 # data set config
 __C.DATA.DATASET = "CNTK_FasterRCNN_SpringEdition"
-#__C.DATA.MAP_FILE_PATH = "../../TrainDataSet"
+#__C.DATA.MAP_FILE_PATH = "../../TrainDataSet"          #not used
 __C.DATA.CLASS_MAP_FILE = "class_map.txt"
 __C.DATA.TRAIN_MAP_FILE = "train_img_file.txt"
 __C.DATA.TRAIN_ROI_FILE = "train_roi_file.txt"
-#__C.DATA.TEST_MAP_FILE = "test_img_file.txt"
-#__C.DATA.TEST_ROI_FILE = "test_roi_file.txt"
-#__C.DATA.NUM_TRAIN_IMAGES = 60
-#__C.DATA.NUM_TEST_IMAGES = 10
+#__C.DATA.TEST_MAP_FILE = "test_img_file.txt"          #not used
+#__C.DATA.TEST_ROI_FILE = "test_roi_file.txt"          #not used
+#__C.DATA.NUM_TRAIN_IMAGES = 60                       #automatically select
+#__C.DATA.NUM_TEST_IMAGES = 10                        #not used
 __C.DATA.PROPOSAL_LAYER_SCALES = [8,16,32]
 
 

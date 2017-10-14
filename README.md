@@ -6,7 +6,8 @@
 * You need only 1 header file, To detect by FasterRCNN.
 
 <img src="https://i.imgur.com/ElCyyzT.png" title="Windows8" width="48"><img src="https://i.imgur.com/O5bye0l.png" width="48">
-
+## Lastest news
+**2017-10-14.** : Support unicode(korean) path. Changed default IPC buffers as 10000 bytes.
 ## Setup for train
 #### 1. Download model and files.
 There is a **download_model.bat** in [CNTK/FasterRCNN/](https://github.com/springkim/FasterRCNN_SpringEdition/tree/master/CNTK/FasterRCNN).

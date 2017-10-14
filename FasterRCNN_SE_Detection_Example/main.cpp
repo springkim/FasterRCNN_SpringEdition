@@ -1,5 +1,4 @@
-﻿// dllmain.cpp: DLL 응용 프로그램의 진입점을 정의합니다.
-#include <Windows.h>
+﻿#include <Windows.h>
 #include<string>
 #include<iostream>
 #include"ispring/All.h"	//@see https://github.com/springkim/ISpring

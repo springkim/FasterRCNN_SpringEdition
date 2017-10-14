@@ -471,6 +471,7 @@ namespace ispring {
 			}
 			return glue;
 		}
+		
 #if defined(ISPRING_WINDOWS) || defined(DOXYGEN)
 		/**
 		*	@brief HBITMAP을 cv::Mat 으로 변환 합니다.

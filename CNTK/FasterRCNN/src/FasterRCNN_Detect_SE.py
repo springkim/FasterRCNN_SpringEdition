@@ -11,6 +11,8 @@ from utils.config_helpers import merge_configs
 import utils.od_utils as od
 from utils.FasterRCNN_eval import FasterRCNN_Evaluator
 
+import re
+
 def get_configuration():
     from utils.configs.FasterRCNN_config import cfg as detector_cfg
     from utils.configs.VGG16_config import cfg as network_cfg
@@ -21,6 +23,17 @@ def prepare_detect(cfg, use_arg_parser=True):
     cfg.MB_SIZE = 1
     cfg.NUM_CHANNELS = 3
     np.random.seed(seed=cfg.RND_SEED)
+
+def imreadEX(image_path):
+    if re.compile('[^ ㄱ-ㅣ가-힣]+').sub('', image_path):
+        stream = open(image_path, "rb")
+        bytes = bytearray(stream.read())
+        numpyarray = np.asarray(bytes, dtype=np.uint8)
+        img = cv2.imdecode(numpyarray, cv2.IMREAD_UNCHANGED)
+    else:
+        img = cv2.imread(image_path)
+    return img
+
 STANDARD_RIGHTS_REQUIRED = 0x000F0000
 SYNCHRONIZE = 0x00100000
 MUTANT_QUERY_STATE = 0x0001
@@ -28,12 +41,18 @@ MUTEX_ALL_ACCESS = STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | MUTANT_QUERY_STATE
 #
 #   argv[1]=shmem key
 #   argv[2]=mutex key
-#   argv[3]=model path
+#   argv[3]=shmem size
+#   argv[4]=model path
+#   argv[5]=default threshold
 #
 shmem_key=sys.argv[1]
 mutex_key=sys.argv[2]
 shmem_size=int(sys.argv[3])
 model_path=sys.argv[4]
+threshold=float(sys.argv[5])
+
+
+
 shm = mmap.mmap(0,shmem_size,shmem_key)
 mutex = win32event.OpenMutex(MUTEX_ALL_ACCESS, False, mutex_key)
 if not (mutex):
@@ -59,16 +78,17 @@ win32event.WaitForSingleObject(mutex,win32event.INFINITE)
 shm.write(bytes(str(1), "ascii"))
 win32event.ReleaseMutex(mutex)
 #=======================================================================================================================
-while(True):
+while(True ):
     win32event.WaitForSingleObject(mutex,win32event.INFINITE)
     shm.seek(0)
     run_type = shm.read(1)
     if(run_type == b'2'):
-        img_path = str(shm.read(256),"ascii")
-        #detect
+        img_path = shm.read(256).decode('cp949');
+        img_path = img_path.split('\0', 1)[0]
+        # detect
         regressed_rois, cls_probs = od.predict_single_image(model, img_path, cfg, evaluator)
-        #fix roi
-        img = cv2.imread(img_path)
+        # fix roi
+        img = imreadEX(img_path)
         height, width = img.shape[:2]
         scale = 850.0 / max(width, height)
         pad = int((max(height, width) - min(height, width)) / 2)
@@ -81,7 +101,7 @@ while(True):
                 if(m_score<cls_probs[i][j]):
                     m_score=cls_probs[i][j]
                     m_class=j
-            if(m_class!=0 and cls_probs[i][m_class]>0.4):
+            if(m_class!=0 and cls_probs[i][m_class]>threshold):
                 regressed_rois[i] /= scale
                 if (width > height):
                     regressed_rois[i][1] -= pad
