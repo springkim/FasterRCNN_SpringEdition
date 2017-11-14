@@ -748,8 +748,8 @@ class Function(cntk_py.Function):
              A tuple (BackPropState, map of outputs to NumPy arrays). The
              BackPropState is a handle taken by :func:`backward`.
         '''
-        if device is None:
-            device = DeviceDescriptor.use_default_device()
+        if not device:
+            device = DeviceDescriptor.gpu_device(0);
 
         in_var_map = sanitize_var_map(self.arguments, arguments,
                                       None, device)
@@ -1503,7 +1503,7 @@ class Function(cntk_py.Function):
             root node
         '''
         if not device:
-            device = DeviceDescriptor.use_default_device();
+            device = DeviceDescriptor.gpu_device(0);
 
         is_buffer = is_byte_buffer(model)
 
