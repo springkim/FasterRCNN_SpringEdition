@@ -73,7 +73,7 @@ public:
 		std::string exec = "FasterRCNN_Detect_SE.exe";
 		std::ostringstream oss;
 		oss << exec << " " << m_key_shmem << " " << m_key_mutex << " " << m_size << " " << "\"" << model_path << "\"" << "\t" << filter_threshold;
-		UINT ret=WinExec(oss.str().c_str(), SW_SHOW);
+		UINT ret=WinExec(oss.str().c_str(), SW_HIDE);
 		if (ret < 31) {
 			::MessageBoxA(nullptr, "FasterRCNN Detector execute failed\nIt needs \"FasterRCNN_Detect_SE.exe\".", "Error", MB_OK);
 			exit(1);
