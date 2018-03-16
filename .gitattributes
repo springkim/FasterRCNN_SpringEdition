@@ -7,4 +7,6 @@
 *.md   eol=crlf
 *.bat   eol=crlf
 *.txt   eol=crlf
-CNTK/* linguist-vendored
+#ignore python language
+FasterRCNN_SE_Train/* linguist-vendored
+FasterRCNN_SE_Detection/*.bat linguist-vendored
