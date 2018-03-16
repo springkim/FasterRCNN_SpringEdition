@@ -1,0 +1,10 @@
+*.h   eol=crlf
+*.c   eol=crlf
+*.cpp   eol=crlf
+*.hpp   eol=crlf
+*.py   eol=crlf
+*.txt   eol=crlf
+*.md   eol=crlf
+*.bat   eol=crlf
+*.txt   eol=crlf
+CNTK/* linguist-vendored
