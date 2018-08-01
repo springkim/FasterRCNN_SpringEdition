@@ -75,14 +75,23 @@ public:
 		m_shmem = ::CreateFileMappingA(INVALID_HANDLE_VALUE, nullptr,PAGE_READWRITE, 0, m_size, m_key_shmem.c_str());
 		m_buffer = (char*)::MapViewOfFile(m_shmem, FILE_MAP_ALL_ACCESS, 0, 0, m_size);
 		m_buffer[0] = 0;
-		//std::string exec = "python35 \"C:/Users/sprin/Downloads/FasterRCNN_SpringEdition_final/FasterRCNN_SE_Train/src/FasterRCNN_Detect_SE.py\"";
+#ifdef FasterRCNN_SE_Test
+		char* pyfile_r = "../../../FasterRCNN_SE_Train/src/FasterRCNN_Detect_SE.py";
+		char _pyfile_a[MAX_PATH] = { 0 };
+		GetFullPathNameA(pyfile_r, MAX_PATH, _pyfile_a, NULL);
+		std::string pyfile_a = _pyfile_a;
+		std::replace(pyfile_a.begin(), pyfile_a.end(), '\\', '/');
+		std::string exec = "python35 \"" + pyfile_a + "\"";
+#else
 		std::string exec = "FasterRCNN_Detect_SE.exe";
+#endif
+		
 		HWND hwnd = GetForegroundWindow();
 		std::vector<std::string> models = { "AlexNet","VGG16","VGG19" };
 		std::ostringstream oss;
-		//oss << exec << " " << m_key_shmem << " " << m_key_mutex << " " << m_size << " " << "\"" << model_path << "\"" << "\t" << filter_threshold << " " << hwnd << " " << models[m_base_model];
+		//oss << exec << " " << m_key_shmem << " " << m_key_mutex << " " << m_size << " " << "\"" << model_path << "\"" << " " << filter_threshold << " " << hwnd << " " << models[m_base_model];
 		//UINT ret=WinExec(oss.str().c_str(), SW_HIDE);
-		oss << m_key_shmem << " " << m_key_mutex << " " << m_size << " " << "\"" << model_path << "\"" << "\t" << filter_threshold << " " << hwnd << " " << models[m_base_model];
+		oss << m_key_shmem << " " << m_key_mutex << " " << m_size << " " << "\"" << model_path << "\"" << " " << filter_threshold << " " << hwnd << " " << models[m_base_model];
 		HINSTANCE ret=ShellExecuteA(NULL, "open", exec.c_str(), oss.str().c_str(), NULL, SW_HIDE);
 		if ((size_t)ret < 31) {
 			::MessageBoxA(nullptr, "FasterRCNN Detector execute failed\nIt needs \"FasterRCNN_Detect_SE.exe\".", "Error", MB_OK);

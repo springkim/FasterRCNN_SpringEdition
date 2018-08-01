@@ -1,1 +1,1 @@
-powershell "(New-Object System.Net.WebClient).DownloadFile('https://www.dropbox.com/s/a1aa7ngbvrp82bi/VGG19_ImageNet_Caffe.model?dl=1','VGG19_ImageNet_Caffe.model')"
+powershell "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;(New-Object System.Net.WebClient).DownloadFile('https://github.com/springkim/FasterRCNN_SpringEdition/releases/download/cntk/VGG19_ImageNet_Caffe.model','VGG19_ImageNet_Caffe.model')"

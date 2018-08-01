@@ -1,1 +1,1 @@
-powershell "(New-Object System.Net.WebClient).DownloadFile('https://www.dropbox.com/s/txfkcvba15dw3c8/AlexNet_ImageNet_Caffe.model?dl=1','AlexNet_ImageNet_Caffe.model')"
+powershell "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;(New-Object System.Net.WebClient).DownloadFile('https://github.com/springkim/FasterRCNN_SpringEdition/releases/download/cntk/AlexNet_ImageNet_Caffe.model','AlexNet_ImageNet_Caffe.model')"

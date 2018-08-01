@@ -60,7 +60,8 @@ int main() {
 				std::cout << "\tPrecision : " << RP.find(i)->second.second / cnt[i] << std::endl;
 			}
 		}
-		/*cv::Mat img = cv::imread(file);
+		//continue;
+		cv::Mat img = cv::imread(file);
 		for (auto&box : boxes) {
 			ispring::CVEval::DrawBoxSE(img, box,cv::Scalar(0,0,255));
 		}
@@ -68,7 +69,9 @@ int main() {
 			ispring::CVEval::DrawBoxSE(img, box,cv::Scalar(0,255,0));
 		}
 		cv::imshow("result", img);
-		cv::waitKey(0);*/
+		if (cv::waitKey(0) == 27) {
+			break;
+		}
 	}
 	cv::destroyAllWindows();
 	detector.Release();												//Release
